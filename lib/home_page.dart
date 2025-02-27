@@ -19,16 +19,18 @@ class _HomePage extends State<HomePage> {
   
   // fonction pour obtenir les données dans l'api et ls traduire directement en français
   Future<Map<String,String>?> _getQuoteFromApi() async{
+
     try {
       final response = await dio.get("https://api.breakingbadquotes.xyz/v1/quotes");
-      // Model Api Data
-      // [ { "quote" : "this is a quote in English", "author" : "Hulrich Baku" } ]
 
       List dataQuote = response.data;   
+      /*
+        -------------------------- Api Data Model -------------------------------
+        [{ "quote"   : "this is a quote in English", "author" : "Hulrich Baku" }] 
+      */
 
-      String quote = dataQuote[0]["quote"]; // quote 
-      String author = dataQuote[0]["author"]; // author
-
+      String quote = dataQuote[0]["quote"];   //quote 
+      String author = dataQuote[0]["author"];   //author
 
       var quoteTranslated = await _translator.translate(quote, to:"fr") ;
 
@@ -38,6 +40,7 @@ class _HomePage extends State<HomePage> {
       };
 
       return result;
+
     } catch (e) {
       return null;
     }
