@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:translator/translator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,14 +14,30 @@ class _HomePage extends State<HomePage> {
 
   bool _clickedButton = false; // vérificateur du bouton cliqué
   final Dio dio = Dio(); // creation d'un objet Dio pour faire des requetes http
-  dynamic varData; // variable recepteur des données venant de l'api
+  Map<String,String>? varData; // variable recepteur des données venant de l'api
+  final _translator = GoogleTranslator(); // l'objet traducteur (googleTranslator)
   
-  // fonction pour obtenir les données dans l'api
-  _getQuoteFromApi() async{
+  // fonction pour obtenir les données dans l'api et ls traduire directement en français
+  Future<Map<String,String>?> _getQuoteFromApi() async{
     try {
       final response = await dio.get("https://api.breakingbadquotes.xyz/v1/quotes");
-      List dataQuote = response.data;
-      return dataQuote;
+      // Model Api Data
+      // [ { "quote" : "this is a quote in English", "author" : "Hulrich Baku" } ]
+
+      List dataQuote = response.data;   
+
+      String quote = dataQuote[0]["quote"]; // quote 
+      String author = dataQuote[0]["author"]; // author
+
+
+      var quoteTranslated = await _translator.translate(quote, to:"fr") ;
+
+      Map<String,String> result = {
+        "quote" : quoteTranslated.toString(),
+        "author" : author
+      };
+
+      return result;
     } catch (e) {
       return null;
     }
@@ -85,22 +102,22 @@ class _HomePage extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              spacing: 15,
+              spacing: 10,
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(165, 236, 231, 231),
+                    color: const Color.fromARGB(223, 248, 243, 243),
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: Center(
-                    child: _clickedButton? CircularProgressIndicator() : Column(
-                      spacing: 15,
+                    child: _clickedButton? CircularProgressIndicator(color: const Color.fromARGB(241, 13, 94, 161),) : Column(
+                      spacing: 2,
                       children: [
                       if (varData != null) ...[
-                        Text(varData[0]["quote"], textAlign: TextAlign.center,),
-                        Text(varData[0]["author"], style: TextStyle(fontWeight: FontWeight.bold),)
+                        Text(varData!["quote"]!, textAlign: TextAlign.center,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
+                        Text("- ${varData!["author"]!} -", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17, color: const Color.fromARGB(255, 1, 89, 242)),)
                         ] else Text("La citation apparaitra ici!")
                     ],))
                 ),
@@ -119,14 +136,13 @@ class _HomePage extends State<HomePage> {
                       });
                     } : null,
                     style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       side: BorderSide(color: const Color.fromARGB(255, 18, 21, 24)),
                       iconSize: 20,
                       backgroundColor: Colors.black26,
-                      iconColor: Colors.white,
                     ),
-                    label: Text("Rechercher une citation", style :TextStyle(color: Colors.white)),
-                    icon: Icon(Icons.search),
+                    label: Text("Rechercher une citation", style :TextStyle(color: Colors.white, fontSize: 16.2)),
+                    icon: Icon(Icons.search, color: Colors.white),
                   ),
                 )
             ]),
