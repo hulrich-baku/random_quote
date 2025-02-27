@@ -28,4 +28,5 @@ Elle offre des fonctionnalités suivantes :.
 ```bash
     flutter run
 ```
-
+**Contacts**
+- Email : hulrichbaku6@gmail.com
