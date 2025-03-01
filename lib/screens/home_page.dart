@@ -1,6 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:random_quote/model/quote.dart';
+import 'package:random_quote/service/quote_service.dart';
 import 'package:translator/translator.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +18,9 @@ class _HomePage extends State<HomePage> {
   final Dio dio = Dio(); // creation d'un objet Dio pour faire des requetes http
   Map<String,String>? varData; // variable recepteur des données venant de l'api
   final _translator = GoogleTranslator(); // l'objet traducteur (googleTranslator)
-  
+  bool _saveController = false; // vérificateur de button enregistré pour mettre à jour l'Interface
+
+
   // fonction pour obtenir les données dans l'api et ls traduire directement en français
   Future<Map<String,String>?> _getQuoteFromApi() async{
 
@@ -59,7 +63,7 @@ class _HomePage extends State<HomePage> {
           if (result.contains(ConnectivityResult.none) || result.isEmpty){ // pas de connexion détectée
             return ConnectivityResult.none;
           } else {
-            // connection détecté (Wifi, mobile, ethernet, other)
+            // connection détectée (Wifi, mobile, ethernet, other)
             return result.first;
           }
         }),
@@ -89,6 +93,7 @@ class _HomePage extends State<HomePage> {
                 );
               });
             } else {
+              // connection détectée (Wifi, mobile, ethernet, other)
               WidgetsBinding.instance.addPostFrameCallback((_){
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               });
@@ -107,6 +112,22 @@ class _HomePage extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 10,
               children: [
+                varData != null ? Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  child: !_saveController ? TextButton(
+                    onPressed: (){
+                      if (varData != null){
+                        final Quote quote = Quote.fromMap(varData!);
+                        QuoteService().saveQuote(quote);
+                      }
+                      setState(() {
+                        _saveController = !_saveController;
+                      });
+                    }, 
+                    child: Text("Enregistrer la citation")
+                  ) : Center(child: Icon(Icons.check_circle, size: 25, color: Colors.green,),),
+                ) : SizedBox.shrink(),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
