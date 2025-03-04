@@ -8,7 +8,7 @@ void main() async{
 
   // initialisation de Hive et ouverture d ela boite
   await Hive.initFlutter();
-  Hive.registerAdapter(QuoteAdaptater());
+  Hive.registerAdapter(QuoteAdapter());
   await Hive.openBox<Quote>('QuoteBox');
   
   runApp(const MyApp());
