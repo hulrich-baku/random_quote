@@ -17,33 +17,44 @@ class _QuoteListState extends State<QuoteList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Citations sauvegardées"), centerTitle: true,),
-      body: ValueListenableBuilder(
-        valueListenable: _box.listenable(), 
-        builder: (context, Box<Quote> box, _){
-          if (box.isEmpty){
-            return Center(child: Text("Aucune citation enregistrée"),);
-          }
-          return ListView.builder(
-            itemCount: box.length,
-            itemBuilder: (context, index){
-              final quote = box.getAt(index);
-              return Card(
-                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                child: ListTile(
-                  title: Text(quote!.text),
-                  subtitle: Text(quote.author),
-                  trailing: IconButton(
-                    onPressed: (){
-                      QuoteService().deleteQuote(index);
-                    }, 
-                    icon: Icon(Icons.delete, color: Colors.red,)
-                  ),
-                ),
-              );
+      appBar: AppBar(
+        title: Text("Citations sauvegardées"), centerTitle: true,
+        backgroundColor: Color.fromARGB(205, 33, 149, 243),
+        foregroundColor: Colors.white,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                const Color.fromARGB(171, 238, 233, 239),
+                const Color.fromARGB(205, 33, 149, 243)
+              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        child: ValueListenableBuilder(
+          valueListenable: _box.listenable(), 
+          builder: (context, Box<Quote> box, _){
+            if (box.isEmpty){
+              return Center(child: Text("Aucune citation enregistrée"),);
             }
-          );
-        }
+            return ListView.builder(
+              itemCount: box.length,
+              itemBuilder: (context, index){
+                final quote = box.getAt(index);
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: ListTile(
+                    title: Text(quote!.text),
+                    subtitle: Text(quote.author),
+                    trailing: IconButton(
+                      onPressed: (){
+                        QuoteService().deleteQuote(index);
+                      }, 
+                      icon: Icon(Icons.delete, color: Colors.red,)
+                    ),
+                  ),
+                );
+              }
+            );
+          }
+        ),
       ),
     );
   }
