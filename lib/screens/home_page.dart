@@ -133,13 +133,23 @@ class _HomePage extends State<HomePage> {
                                       if (varData != null) {
                                         final Quote quote =
                                             Quote.fromMap(varData!);
-                                        QuoteService().saveQuote(quote);
+                                          if (QuoteService().checkIfQuoteExists(quote)) {
+                                            ScaffoldMessenger.of(context).showMaterialBanner(
+                                              MaterialBanner(
+                                                content: Text("Citation déjà enregistrée", style: TextStyle(color: Colors.red),), 
+                                                actions: [
+                                                  IconButton(onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(), icon: Icon(Icons.close, color: Colors.red,))
+                                                ])
+                                            );
+                                          } else {
+                                            QuoteService().saveQuote(quote);
+                                            setState(() {
+                                              _saveController = !_saveController;
+                                            });
+                                          }
                                       }
-                                      setState(() {
-                                        _saveController = !_saveController;
-                                      });
                                     },
-                                    child: Text("Enregistrer la citation"))
+                                    child: Text("Enregistrer la citation", style: TextStyle(fontSize: 16.8),))
                                 : Center(
                                     child: Icon(
                                       Icons.check_circle,

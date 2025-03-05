@@ -13,4 +13,8 @@ class QuoteService {
     _box.deleteAt(index);
   }
 
+  bool checkIfQuoteExists(Quote myQuote){
+    return _box.values.any((quote)=> quote.text == myQuote.text);
+  }
+
 }
