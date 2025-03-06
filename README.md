@@ -4,12 +4,13 @@
 
 ## Fonctionnalités
 
-Elle offre des fonctionnalités suivantes :.
+Elle offre des fonctionnalités suivantes :
 
-- récupérer la citation et le nom de l'auteur via l'api
-- afficher cette citation et la traduire en français
+- récupérer la citation et le nom de l'auteur via l'API
+- afficher la citation et la traduire en français
 - vérifier en permenance l'état de la connexion internet
-- enregistrer les citation, si elle existe déjà afficher un message (en cours de dévéloppement)
+- enregistrer les citation, si elle existe déjà afficher un message
+- partager la citation dans d'autres application
 
 ## Installation
 
@@ -30,3 +31,4 @@ Elle offre des fonctionnalités suivantes :.
 ```
 **Contacts**
 - Email : hulrichbaku6@gmail.com
+- Whatsapp : +243825444663
