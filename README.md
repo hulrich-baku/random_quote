@@ -17,7 +17,7 @@ Elle offre des fonctionnalités suivantes :
 **Cloner le dépôt**
 ```bash
     git clone https://github.com/hulrich-baku/random_quote.git
-    cd random_quote
+    cd random-quote
 ```
 
 **Installer les dépendances Flutter**
