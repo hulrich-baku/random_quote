@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import '../model/quote.dart';
+import 'package:share_plus/share_plus.dart';
 
 
 class QuoteService {
@@ -16,5 +17,14 @@ class QuoteService {
   bool checkIfQuoteExists(Quote myQuote){
     return _box.values.any((quote)=> quote.text == myQuote.text);
   }
+
+  void shareQuote(Quote myQuote){
+    Share.share(
+      "``${myQuote.text}`` - ${myQuote.author}",
+      subject: "Partage de la citation"
+    );
+  }
+
+
 
 }

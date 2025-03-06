@@ -127,36 +127,60 @@ class _HomePage extends State<HomePage> {
                         ? Container(
                             width: double.infinity,
                             margin: EdgeInsets.symmetric(horizontal: 15),
-                            child: !_saveController
-                                ? TextButton(
-                                    onPressed: () {
-                                      if (varData != null) {
-                                        final Quote quote =
-                                            Quote.fromMap(varData!);
-                                          if (QuoteService().checkIfQuoteExists(quote)) {
-                                            ScaffoldMessenger.of(context).showMaterialBanner(
-                                              MaterialBanner(
-                                                content: Text("Citation déjà enregistrée", style: TextStyle(color: Colors.red),), 
-                                                actions: [
-                                                  IconButton(onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(), icon: Icon(Icons.close, color: Colors.red,))
-                                                ])
-                                            );
-                                          } else {
-                                            QuoteService().saveQuote(quote);
-                                            setState(() {
-                                              _saveController = !_saveController;
-                                            });
-                                          }
-                                      }
-                                    },
-                                    child: Text("Enregistrer la citation", style: TextStyle(fontSize: 16.8),))
-                                : Center(
-                                    child: Icon(
+                            child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      !_saveController ? IconButton(
+                                          onPressed: () {
+                                            if (varData != null) {
+                                              final Quote quote =
+                                                  Quote.fromMap(varData!);
+                                              if (QuoteService()
+                                                  .checkIfQuoteExists(quote)) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showMaterialBanner(
+                                                        MaterialBanner(
+                                                            content: Text(
+                                                              "Citation déjà enregistrée",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red),
+                                                            ),
+                                                            actions: [
+                                                      IconButton(
+                                                          onPressed: () =>
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .hideCurrentMaterialBanner(),
+                                                          icon: Icon(
+                                                            Icons.close,
+                                                            color: Colors.red,
+                                                          ))
+                                                    ]));
+                                              } else {
+                                                QuoteService().saveQuote(quote);
+                                                setState(() {
+                                                  _saveController =
+                                                      !_saveController;
+                                                });
+                                              }
+                                            }
+                                          },
+                                          icon: Icon(Icons.save)) : Icon(
                                       Icons.check_circle,
                                       size: 25,
                                       color: Colors.green,
                                     ),
-                                  ),
+                                          IconButton(
+                                            onPressed: (){
+                                              final Quote quote = Quote.fromMap(varData!);
+                                              QuoteService().shareQuote(quote);
+                                            }, 
+                                            icon: Icon(Icons.share)
+                                          )
+
+                                    ],
+                                  )
                           )
                         : SizedBox.shrink(),
                     Container(

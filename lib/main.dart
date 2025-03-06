@@ -12,14 +12,6 @@ void main() async{
   await Hive.openBox<Quote>('QuoteBox');
   
   runApp(const MyApp());
-  /* TODO : Résoudre l'erreur qui se trouve dans le fichier main.dart
-  * FIXME : installer deux dependances (dev_depencies) dans le fichier pubspec.yam
-  * NOTE : hive_generator et build_runner ensuite executer la commande pour générer
-  *        les fichiers hive
-  ```bash
-    flutter pub run build_runner build
-  ```
-  */
 }
 
 class MyApp extends StatelessWidget {
